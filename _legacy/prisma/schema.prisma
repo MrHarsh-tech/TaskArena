@@ -1,0 +1,308 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  MCQ
+  FILL_IN_BLANK
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  role          Role      @default(STUDENT)
+  avatarUrl     String?
+  bio           String?
+  xpPoints      Int       @default(0)
+  level         Int       @default(1)
+  lastLoginAt   DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  challenges    Challenge[]
+  attempts      Attempt[]
+  progress      Progress?
+  achievements  UserAchievement[]
+  bookmarks     Bookmark[]
+  rewards       UserReward[]
+  createdPaths  LearningPath[]     @relation("PathCreator")
+  pathProgress  UserPathProgress[]
+
+  @@map("users")
+}
+
+model Challenge {
+  id               String     @id @default(cuid())
+  title            String
+  description      String?
+  difficulty       Difficulty @default(MEDIUM)
+  tags             String[]   @default([])
+  isPublished      Boolean    @default(false)
+  deadline         DateTime?
+  coverImageUrl    String?
+  timeLimit        Int?
+  maxAttempts      Int?
+  estimatedMinutes Int?
+  archivedAt       DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  creatorId   String
+  creator     User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id])
+
+  questions   Question[]
+  attempts    Attempt[]
+  bookmarks   Bookmark[]
+  pathSteps   PathStep[]
+
+  @@map("challenges")
+}
+
+model Question {
+  id              String       @id @default(cuid())
+  body            String
+  explanation     String?
+  orderIndex      Int          @default(0)
+  questionType    QuestionType @default(MCQ)
+  acceptedAnswers String[]     @default([])
+  isCaseSensitive Boolean      @default(false)
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  options     Option[]
+  answers     Answer[]
+
+  @@map("questions")
+}
+
+model Option {
+  id        String  @id @default(cuid())
+  body      String
+  isCorrect Boolean @default(false)
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  answers    Answer[]
+
+  @@map("options")
+}
+
+model Attempt {
+  id             String   @id @default(cuid())
+  score          Int      @default(0)
+  totalQuestions Int      @default(0)
+  percentage     Float    @default(0)
+  startedAt      DateTime @default(now())
+  completedAt    DateTime?
+  timeTakenSeconds Int?
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  answers     Answer[]
+
+  @@map("attempts")
+}
+
+model Answer {
+  id               String  @id @default(cuid())
+  isCorrect        Boolean @default(false)
+  textResponse     String?
+
+  attemptId        String
+  attempt          Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  questionId       String
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  selectedOptionId String?
+  selectedOption   Option?  @relation(fields: [selectedOptionId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
+}
+
+model Progress {
+  id                    String    @id @default(cuid())
+  totalAttempts         Int       @default(0)
+  averageScore          Float     @default(0)
+  challengesCompleted   Int       @default(0)
+  currentStreak         Int       @default(0)
+  longestStreak         Int       @default(0)
+  totalTimeSpentSeconds Int       @default(0)
+  lastActiveAt          DateTime?
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_progress")
+}
+
+model Category {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  slug        String      @unique
+  description String?
+  color       String      @default("#6366f1")
+  iconName    String?
+  challenges  Challenge[]
+  createdAt   DateTime    @default(now())
+
+  @@map("categories")
+}
+
+model Achievement {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  description String
+  iconName    String
+  xpReward    Int               @default(0)
+  condition   String
+  users       UserAchievement[]
+  createdAt   DateTime          @default(now())
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  earnedAt      DateTime    @default(now())
+
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+model Bookmark {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+  @@map("bookmarks")
+}
+
+// ===================== MYSTERY REWARD ENGINE =====================
+
+model Reward {
+  id          String       @id @default(cuid())
+  name        String
+  type        String       // "xp_multiplier", "title", "avatar_frame", "theme_color"
+  rarity      String       @default("common") // "common", "rare", "epic", "legendary"
+  iconEmoji   String       @default("🎁")
+  description String
+  value       String?      // e.g. "2x", "#ff6b6b", "Quiz Master"
+  createdAt   DateTime     @default(now())
+
+  users       UserReward[]
+
+  @@map("rewards")
+}
+
+model UserReward {
+  id        String   @id @default(cuid())
+  earnedAt  DateTime @default(now())
+  source    String   // "mystery_challenge", "streak_surprise", "lucky_answer", "perfect_score", "loot_drop"
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewardId  String
+  reward    Reward   @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+
+  @@map("user_rewards")
+}
+
+// ===================== LEARNING PATHS =====================
+
+model LearningPath {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  iconEmoji   String     @default("🗺️")
+  color       String     @default("#8b5cf6")
+  difficulty  Difficulty @default(MEDIUM)
+  isPublished Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  creatorId   String
+  creator     User       @relation("PathCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  steps       PathStep[]
+  userProgress UserPathProgress[]
+
+  @@map("learning_paths")
+}
+
+model PathStep {
+  id          String   @id @default(cuid())
+  orderIndex  Int      @default(0)
+  title       String?
+  description String?
+  isBossBattle Boolean @default(false)
+  xpBonus     Int      @default(0)
+
+  pathId      String
+  path        LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+
+  challengeId String
+  challenge   Challenge    @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@map("path_steps")
+}
+
+model UserPathProgress {
+  id              String   @id @default(cuid())
+  currentStepIndex Int     @default(0)
+  completedSteps  Int      @default(0)
+  isCompleted     Boolean  @default(false)
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+
+  userId          String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  pathId          String
+  path            LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId])
+  @@map("user_path_progress")
+}
