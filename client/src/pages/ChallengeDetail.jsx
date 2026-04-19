@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 
 export default function ChallengeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [challenge, setChallenge] = useState(null);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -22,6 +26,14 @@ export default function ChallengeDetail() {
         });
         
         setChallenge(res.data);
+
+        if (user) {
+          const bms = await axios.get(`${API_URL}/bookmarks/statuses`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setIsBookmarked(bms.data.includes(id));
+        }
+
       } catch (error) {
         console.error('Failed to fetch challenge', error);
       } finally {
@@ -30,7 +42,21 @@ export default function ChallengeDetail() {
     };
 
     fetchChallenge();
-  }, [id]);
+  }, [id, user]);
+
+  const toggleBookmark = async () => {
+    if (!user) return alert("Please log in to bookmark.");
+    try {
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await axios.post(`${API_URL}/bookmarks/${id}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setIsBookmarked(res.data.isBookmarked);
+    } catch (error) {
+      console.error('Failed to toggle bookmark', error);
+    }
+  };
 
   const handleInputChange = (questionId, value, type) => {
     setAnswers(prev => ({
@@ -99,6 +125,20 @@ export default function ChallengeDetail() {
               </div>
             </div>
 
+            {/* Mystery Reward Notice */}
+            {result.reward?.message && (
+              <div className="w-full max-w-md bg-gradient-to-r from-amber-100 to-yellow-100 border-2 border-yellow-300 rounded-xl p-5 flex items-center shadow-lg animate-in transform transition-transform hover:scale-105">
+                <div className="text-4xl mr-4 animate-bounce">🎁</div>
+                <div>
+                  <h3 className="font-bold text-yellow-800 text-sm tracking-widest uppercase mb-0.5">{result.reward.message}</h3>
+                  <p className="text-yellow-700 font-medium text-sm">
+                    You received a <strong className="text-yellow-900">{result.reward.multiplier}x multiplier</strong>! 
+                    Base XP: {result.reward.baseXp} → Final XP: {result.reward.finalXp}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Level up notification if applicable */}
             <div className="w-full max-w-md bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex items-center justify-between">
                <div>
@@ -145,6 +185,18 @@ export default function ChallengeDetail() {
                  </div>
                  <span className="text-sm font-medium text-slate-700">{challenge.creator.name}</span>
                </div>
+            )}
+            
+            {user && (
+              <button 
+                onClick={toggleBookmark}
+                className={`ml-auto p-2.5 rounded-full border-2 transition-all shadow-sm ${isBookmarked ? 'bg-rose-50 text-rose-500 border-rose-200 hover:bg-rose-100 hover:border-rose-300' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300 hover:text-rose-400'}`}
+                title={isBookmarked ? "Remove Bookmark" : "Save Challenge"}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+              </button>
             )}
           </div>
           

@@ -6,9 +6,25 @@ import { AuthContext } from '../context/AuthContext';
 export default function Challenges() {
   const { user } = useContext(AuthContext);
   const [challenges, setChallenges] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [bookmarkedIds, setBookmarkedIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const res = await axios.get(`${API_URL}/categories`);
+        setCategories(res.data);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchChallenges = async () => {
@@ -20,12 +36,21 @@ export default function Challenges() {
         let url = `${API_URL}/challenges?`;
         if (searchTerm) url += `search=${searchTerm}&`;
         if (difficultyFilter) url += `difficulty=${difficultyFilter}&`;
+        if (categoryFilter) url += `categoryId=${categoryFilter}&`;
         
         const res = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
         setChallenges(res.data);
+
+        // Fetch bookmarks if logged in
+        if (user) {
+          const bms = await axios.get(`${API_URL}/bookmarks/statuses`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setBookmarkedIds(bms.data);
+        }
       } catch (error) {
         console.error('Failed to fetch challenges', error);
       } finally {
@@ -36,7 +61,31 @@ export default function Challenges() {
     // Add a slight debounce for searching
     const timeoutId = setTimeout(() => fetchChallenges(), 300);
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, difficultyFilter]);
+  }, [searchTerm, difficultyFilter, categoryFilter, user]);
+
+  const toggleBookmark = async (e, challengeId) => {
+    e.preventDefault(); // Prevent link click
+    if (!user) {
+       alert("Please log in to bookmark challenges.");
+       return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      
+      const res = await axios.post(`${API_URL}/bookmarks/${challengeId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (res.data.isBookmarked) {
+        setBookmarkedIds(prev => [...prev, challengeId]);
+      } else {
+        setBookmarkedIds(prev => prev.filter(id => id !== challengeId));
+      }
+    } catch (error) {
+      console.error('Failed to toggle bookmark', error);
+    }
+  };
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto animate-in">
@@ -64,6 +113,18 @@ export default function Challenges() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-all font-medium"
           />
+        </div>
+        <div className="w-full sm:w-48">
+          <select 
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 transition-all font-medium appearance-none cursor-pointer"
+          >
+            <option value="">All Categories</option>
+            {categories.map(cat => (
+              <option key={cat._id} value={cat._id}>{cat.name}</option>
+            ))}
+          </select>
         </div>
         <div className="w-full sm:w-48">
           <select 
@@ -100,6 +161,17 @@ export default function Challenges() {
                        </div>
                        {challenge.creator.name}
                     </span>
+                  )}
+                  {user && (
+                    <button 
+                       onClick={(e) => toggleBookmark(e, challenge._id)}
+                       className={`ml-auto p-2 rounded-full focus:outline-none transition-all ${bookmarkedIds.includes(challenge._id) ? 'text-rose-500 bg-rose-50 hover:bg-rose-100' : 'text-slate-400 bg-slate-50 hover:bg-slate-100 hover:text-rose-500'}`}
+                       title="Bookmark Challenge"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                      </svg>
+                    </button>
                   )}
                 </div>
                 

@@ -3,15 +3,20 @@ const Attempt = require('../models/Attempt');
 const Progress = require('../models/Progress');
 const User = require('../models/User');
 const Question = require('../models/Question');
+const { calculateReward } = require('../services/rewardService');
 
 const getChallenges = async (req, res) => {
   try {
-    const { difficulty, search, creatorId } = req.query;
+    const { difficulty, search, creatorId, categoryId } = req.query;
     
     let query = { isPublished: true };
     
     if (creatorId) {
       query.creator = creatorId;
+    }
+    
+    if (categoryId) {
+      query.category = categoryId;
     }
     
     if (difficulty) {
@@ -163,9 +168,12 @@ const submitAttempt = async (req, res) => {
     await progress.save();
 
     // Give XP
-    let xpEarned = 10;
-    if (percentage >= 80) xpEarned += 20;
-    if (percentage === 100) xpEarned += 30;
+    let baseXp = 10;
+    if (percentage >= 80) baseXp += 20;
+    if (percentage === 100) baseXp += 30;
+
+    const reward = calculateReward(baseXp);
+    const xpEarned = reward.finalXp;
 
     const user = await User.findById(req.user._id);
     user.xpPoints += xpEarned;
@@ -176,7 +184,8 @@ const submitAttempt = async (req, res) => {
       attempt,
       xpEarned,
       newXp: user.xpPoints,
-      newLevel: user.level
+      newLevel: user.level,
+      reward
     });
 
   } catch (error) {

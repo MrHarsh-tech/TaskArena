@@ -19,6 +19,8 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/quick-play', require('./routes/quickPlay'));
 app.use('/api/learning-paths', require('./routes/paths'));
+app.use('/api/categories', require('./routes/categories'));
+app.use('/api/bookmarks', require('./routes/bookmarks'));
 
 const path = require('path');
 
