@@ -4,6 +4,7 @@
   body {
     background-color: var(--color-slate-50);
     color: var(--color-slate-900);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -43,5 +44,15 @@
       radial-gradient(at 20% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
       radial-gradient(at 80% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
       radial-gradient(at 50% 80%, rgba(236, 72, 153, 0.10) 0%, transparent 50%);
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .float-animation {
+    animation: float 4s ease-in-out infinite;
   }
 }

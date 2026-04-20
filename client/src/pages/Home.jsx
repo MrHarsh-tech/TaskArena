@@ -4,15 +4,15 @@ export default function Home() {
   return (
     <div className="animate-in space-y-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-32 text-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/80 via-white/50 to-emerald-50/60" />
+      <section className="relative overflow-hidden pt-24 pb-32 text-center mesh-gradient border-b border-indigo-50/50">
+        <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
         
         <div className="relative mx-auto max-w-4xl px-4 flex flex-col items-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-sm font-medium text-indigo-700">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-200/50 bg-white/60 backdrop-blur-md px-5 py-2 text-sm font-semibold text-indigo-700 shadow-sm float-animation">
             ✨ Now in Beta — Start learning today
           </div>
 
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl text-slate-900 mb-6">
+          <h1 className="font-display text-5xl font-black tracking-tight sm:text-7xl text-slate-900 mb-6 drop-shadow-sm leading-tight">
             Learn, Compete, and{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-500">
               Master Skills

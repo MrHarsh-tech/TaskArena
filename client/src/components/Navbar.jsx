@@ -18,14 +18,14 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/90">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 border-b border-white/50 shadow-sm transition-all duration-300">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform">
-              <span className="text-white font-black text-xl">T</span>
+              <span className="text-white font-display font-black text-xl">T</span>
             </div>
-            <span className="font-extrabold text-2xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
+            <span className="font-display font-extrabold text-2xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
               Task<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Arena</span>
             </span>
           </Link>

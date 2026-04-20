@@ -45,7 +45,7 @@ export default function QuickPlay() {
        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-600 rounded-full blur-3xl opacity-20"></div>
 
        <div className="relative z-10 p-16 text-center">
-         <h1 className="text-5xl font-black text-white tracking-tight mb-4">Quick Play</h1>
+         <h1 className="font-display text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight mb-6 drop-shadow-sm">Quick Play</h1>
          <p className="text-xl text-slate-300 font-medium max-w-sm mx-auto mb-12">
             Let fate decide! We'll match you with a challenge tailored to test your mastery.
          </p>

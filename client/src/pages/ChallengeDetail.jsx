@@ -108,7 +108,7 @@ export default function ChallengeDetail() {
             
             <div className="relative z-10 flex flex-col items-center">
               <div className="text-8xl mb-6 drop-shadow-lg animate-bounce">{isPass ? '🏆' : '📚'}</div>
-              <h2 className="text-4xl font-extrabold mb-2 tracking-tight">{isPass ? 'Challenge Passed!' : 'Requires Revision!'}</h2>
+              <h2 className="font-display text-5xl font-black mb-4 tracking-tight">{isPass ? 'Challenge Passed!' : 'Requires Revision!'}</h2>
               <p className="text-white/90 text-lg font-medium">You scored {result.attempt.score} out of {result.attempt.totalQuestions}</p>
             </div>
           </div>
@@ -200,7 +200,7 @@ export default function ChallengeDetail() {
             )}
           </div>
           
-          <h1 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">{challenge.title}</h1>
+          <h1 className="font-display text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight drop-shadow-sm">{challenge.title}</h1>
           <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">{challenge.description}</p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export default function ChallengeDetail() {
           <button 
             type="submit" 
             disabled={submitting}
-            className="px-10 py-5 bg-indigo-600 text-white rounded-2xl font-bold text-lg hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-1 transition-all disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
+            className="px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-bold text-lg hover:from-indigo-700 hover:to-purple-700 hover:shadow-glass-button hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none w-full md:w-auto"
           >
             {submitting ? 'Evaluating Submission...' : 'Submit Answers & Calculate Score'}
           </button>

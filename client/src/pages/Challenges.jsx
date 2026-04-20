@@ -91,8 +91,8 @@ export default function Challenges() {
     <div className="space-y-8 max-w-7xl mx-auto animate-in">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Available Challenges</h1>
-          <p className="text-lg text-slate-600 mt-2">Test your skills and climb the leaderboard.</p>
+          <h1 className="font-display text-5xl font-black text-slate-900 tracking-tight mb-2">Available Challenges</h1>
+          <p className="text-lg text-slate-600">Test your skills and climb the leaderboard.</p>
         </div>
         {user?.role === 'INSTRUCTOR' && (
           <Link 
@@ -147,8 +147,8 @@ export default function Challenges() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {challenges.map(challenge => (
-            <div key={challenge._id} className="group bg-white rounded-2xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-indigo-300 transition-all flex flex-col overflow-hidden">
-              <div className={`h-2 ${challenge.difficulty === 'EASY' ? 'bg-emerald-400' : challenge.difficulty === 'MEDIUM' ? 'bg-amber-400' : 'bg-rose-500'}`}></div>
+            <div key={challenge._id} className="group bg-white/80 backdrop-blur-md rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-200 transition-all duration-300 flex flex-col overflow-hidden relative">
+              <div className={`h-2 ${challenge.difficulty === 'EASY' ? 'bg-gradient-to-r from-emerald-400 to-teal-400' : challenge.difficulty === 'MEDIUM' ? 'bg-gradient-to-r from-amber-400 to-orange-400' : 'bg-gradient-to-r from-rose-500 to-red-500'}`}></div>
               <div className="p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full ${challenge.difficulty === 'EASY' ? 'bg-emerald-50 text-emerald-700' : challenge.difficulty === 'MEDIUM' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'}`}>
@@ -175,7 +175,7 @@ export default function Challenges() {
                   )}
                 </div>
                 
-                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
+                <h3 className="font-display text-2xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
                   {challenge.title}
                 </h3>
                 <p className="text-slate-600 flex-grow mb-8 line-clamp-3 leading-relaxed">

@@ -19,36 +19,45 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow border border-gray-100">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login to TaskArena</h2>
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden mesh-gradient animate-in">
+      {/* Decorative blobs */}
+      <div className="absolute top-10 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+      <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+
+      <div className="max-w-md w-full space-y-8 bg-white/70 backdrop-blur-xl p-10 rounded-3xl shadow-glass border border-white/50 relative z-10 transition-all duration-300 hover:shadow-xl hover:bg-white/80">
+        <div>
+          <h2 className="mt-2 text-center font-display text-4xl font-extrabold text-slate-900 tracking-tight">Login to TaskArena</h2>
+          <p className="text-slate-500 mt-2 font-medium text-center">Welcome back! Please enter your details.</p>
+        </div>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <label className="block text-sm font-semibold text-slate-700">Email</label>
           <input 
             type="email" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500" 
+            className="mt-2 block w-full rounded-xl bg-white/50 border-slate-200/60 shadow-sm p-3 border focus:border-indigo-500 focus:ring-indigo-500 transition-colors" 
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Password</label>
+          <label className="block text-sm font-semibold text-slate-700">Password</label>
           <input 
             type="password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500" 
+            className="mt-2 block w-full rounded-xl bg-white/50 border-slate-200/60 shadow-sm p-3 border focus:border-indigo-500 focus:ring-indigo-500 transition-colors" 
             required
           />
         </div>
-        <button type="submit" className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition font-medium">
+        <button type="submit" className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5">
           Sign In
         </button>
       </form>
       <p className="mt-4 text-center text-sm text-gray-600">
         Don't have an account? <Link to="/register" className="text-indigo-600 hover:text-indigo-800 font-medium">Register</Link>
       </p>
+      </div>
     </div>
   );
 }

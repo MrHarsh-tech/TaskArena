@@ -25,15 +25,16 @@ export default function Register() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 relative animate-in">
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur-xl opacity-20 -z-10"></div>
-      <div className="bg-white/80 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 text-white font-black text-3xl mb-4 shadow-lg shadow-indigo-500/30 rotate-3">
-            T
-          </div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Join the Arena</h2>
-          <p className="text-slate-500 mt-2 font-medium">Create your account to start learning</p>
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden mesh-gradient animate-in">
+      {/* Decorative blobs */}
+      <div className="absolute top-20 left-20 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+      <div className="absolute top-40 right-20 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+
+      <div className="max-w-md w-full space-y-8 bg-white/70 backdrop-blur-xl p-10 rounded-3xl shadow-glass border border-white/50 relative z-10 transition-all duration-300 hover:shadow-xl hover:bg-white/80">
+        <div>
+          <h2 className="mt-2 text-center font-display text-4xl font-extrabold text-slate-900 tracking-tight">Join the Arena</h2>
+          <p className="text-slate-500 mt-2 font-medium text-center">Create your account to start learning</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
