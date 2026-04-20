@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, ShieldAlert, Shield } from 'lucide-react';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -12,6 +12,20 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const passwordStrength = useMemo(() => {
+    if (!password) return { score: 0, label: '', color: 'bg-slate-200' };
+    
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (score <= 1) return { score, label: 'Weak', color: 'bg-red-500' };
+    if (score === 2) return { score, label: 'Good', color: 'bg-yellow-500' };
+    return { score, label: 'Strong', color: 'bg-emerald-500' };
+  }, [password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +45,12 @@ export default function Register() {
     if (password.length < 6) {
       alert('Password must be at least 6 characters');
       return;
+    }
+
+    if (passwordStrength.label === 'Weak') {
+      if (!confirm('Your password is weak. Do you want to continue anyway?')) {
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -81,22 +101,42 @@ export default function Register() {
             />
           </div>
           <div className="relative">
-            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Password</label>
-            <input 
-              type={showPassword ? "text" : "password"} 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 h-12 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium pr-12" 
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1 flex justify-between items-center">
+              Password
+              {password && (
+                <span className={`text-[10px] uppercase tracking-wider font-black px-2 py-0.5 rounded-full ${passwordStrength.color} text-white`}>
+                  {passwordStrength.label}
+                </span>
+              )}
+            </label>
+            <div className="relative">
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 h-12 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium pr-12" 
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            
+            {/* Password Strength Indicator Bars */}
+            {password && (
+              <div className="flex gap-1 mt-2 px-1">
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-slate-200'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-slate-200'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-slate-200'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 4 ? passwordStrength.color : 'bg-slate-200'}`}></div>
+              </div>
+            )}
+            <p className="text-[10px] text-slate-400 mt-1.5 ml-1 font-medium">Use 8+ chars with mix of letters, numbers & symbols</p>
           </div>
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">I want to...</label>
