@@ -1,15 +1,25 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Basic frontend validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
     try {
       await login(email, password);
       navigate('/');
@@ -40,15 +50,22 @@ export default function Login() {
             required
           />
         </div>
-        <div>
+        <div className="relative">
           <label className="block text-sm font-semibold text-slate-700">Password</label>
           <input 
-            type="password" 
+            type={showPassword ? "text" : "password"} 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 block w-full rounded-xl bg-white/50 border-slate-200/60 shadow-sm p-3 border focus:border-indigo-500 focus:ring-indigo-500 transition-colors" 
+            className="mt-2 block w-full rounded-xl bg-white/50 border-slate-200/60 shadow-sm p-3 border focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-12" 
             required
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
         <button type="submit" className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5">
           Sign In

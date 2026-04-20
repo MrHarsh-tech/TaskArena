@@ -22,8 +22,6 @@ app.use('/api/learning-paths', require('./routes/paths'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/bookmarks', require('./routes/bookmarks'));
 
-const path = require('path');
-
 // --------------------------
 // Default Error Handler
 // --------------------------
@@ -33,19 +31,15 @@ app.use((err, req, res, next) => {
 });
 
 // --------------------------
-// Serve Frontend in Production
+// API Fallback (404 Handler)
 // --------------------------
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+app.get('/', (req, res) => {
+  res.send('TaskArena API is running...');
+});
 
-  app.get('/{*splat}', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
-  });
-} else {
-  app.get('/', (req, res) => {
-    res.send('API is running...');
-  });
-}
+app.use('*', (req, res) => {
+  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+});
 
 const PORT = process.env.PORT || 5000;
 
