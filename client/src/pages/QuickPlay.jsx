@@ -39,38 +39,38 @@ export default function QuickPlay() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto rounded-3xl overflow-hidden shadow-2xl relative bg-slate-900 animate-in mt-10 border border-slate-700">
-       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20mix-blend-overlay"></div>
-       <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-30"></div>
-       <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-600 rounded-full blur-3xl opacity-20"></div>
+    <div className="max-w-2xl mx-auto rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative glass-card animate-in mt-10 border border-white/10">
+       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
+       <div className="absolute -top-24 -right-24 w-64 h-64 bg-fuchsia-500 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
+       <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-500 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
 
        <div className="relative z-10 p-16 text-center">
-         <h1 className="font-display text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight mb-6 drop-shadow-sm">Quick Play</h1>
-         <p className="text-xl text-slate-300 font-medium max-w-sm mx-auto mb-12">
+         <h1 className="font-display text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 tracking-tight mb-6 neon-text-glow">Quick Play</h1>
+         <p className="text-xl text-slate-300 max-w-sm mx-auto mb-12 font-light">
             Let fate decide! We'll match you with a challenge tailored to test your mastery.
          </p>
 
          {countdown > 0 ? (
            <div className="flex flex-col items-center">
-             <div className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-indigo-400 animate-pulse drop-shadow-2xl mb-4">
+             <div className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-indigo-400 animate-pulse drop-shadow-[0_0_20px_rgba(217,70,239,0.5)] mb-4">
                {countdown}
              </div>
-             <p className="text-slate-400 font-semibold uppercase tracking-widest animate-pulse">Entering the Arena...</p>
+             <p className="text-fuchsia-300 font-bold uppercase tracking-widest animate-pulse">Entering the Arena...</p>
            </div>
          ) : loading ? (
            <div className="flex flex-col items-center">
-             <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4" />
-             <p className="text-slate-400 font-semibold uppercase tracking-widest">Finding Match...</p>
+             <div className="w-16 h-16 border-4 border-fuchsia-500 border-t-transparent rounded-full animate-spin mb-4 shadow-[0_0_15px_rgba(217,70,239,0.5)]" />
+             <p className="text-fuchsia-300 font-bold uppercase tracking-widest">Finding Match...</p>
            </div>
          ) : (
            <button 
              onClick={handleQuickPlay}
-             className="relative group overflow-hidden inline-flex items-center px-10 py-5 font-bold rounded-full text-white bg-indigo-600 hover:scale-105 transition-all shadow-[0_0_40px_rgba(79,70,229,0.4)] hover:shadow-[0_0_60px_rgba(79,70,229,0.8)]"
+             className="relative group overflow-hidden inline-flex items-center px-10 py-5 font-bold rounded-full text-white bg-[#0a0a0f] border border-fuchsia-500/50 hover:border-fuchsia-400 hover:scale-105 transition-all shadow-[0_0_30px_rgba(217,70,239,0.3)] hover:shadow-[0_0_50px_rgba(217,70,239,0.6)]"
            >
              <span className="relative z-10 text-xl flex items-center gap-2">
-                Roll the Dice <span className="text-2xl group-hover:animate-bounce">🎲</span>
+                Roll the Dice <span className="text-2xl group-hover:animate-bounce drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">🎲</span>
              </span>
-             <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity bg-[length:200%_auto] animate-shimmer"></div>
+             <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-indigo-600/50 via-fuchsia-600/50 to-indigo-600/50 opacity-0 group-hover:opacity-100 transition-opacity bg-[length:200%_auto] animate-shimmer"></div>
            </button>
          )}
        </div>

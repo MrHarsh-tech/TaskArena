@@ -60,59 +60,62 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 animate-in">
       <div>
-        <h1 className="font-display text-4xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
-        <p className="text-slate-600 mt-2 text-lg">Welcome back, <span className="font-bold text-indigo-600">{user.name}</span>! {user.role === 'INSTRUCTOR' ? 'Here is how your challenges are performing.' : 'Track your progress and achievements.'}</p>
+        <h1 className="font-display text-4xl font-extrabold text-white tracking-tight drop-shadow-md">Dashboard</h1>
+        <p className="text-slate-400 mt-2 text-lg">Welcome back, <span className="font-bold text-fuchsia-400">{user.name}</span>! {user.role === 'INSTRUCTOR' ? 'Here is how your challenges are performing.' : 'Track your progress and achievements.'}</p>
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[1,2,3,4].map(n => <div key={n} className="bg-slate-100 h-28 rounded-xl animate-pulse"></div>)}
+          {[1,2,3,4].map(n => <div key={n} className="bg-slate-800/50 h-28 rounded-xl animate-pulse border border-white/5"></div>)}
         </div>
       ) : (
         <>
           {/* Main Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-indigo-100 transition-colors"></div>
-              <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">XP / Level</h3>
-              <p className="text-5xl font-black text-indigo-600 tracking-tight">{stats?.xpPoints || 0}</p>
-              <p className="text-sm font-medium text-slate-400 mt-2">Level {stats?.level || 1}</p>
+            <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(99,102,241,0.2)] group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-indigo-500/30 transition-colors pointer-events-none"></div>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">XP / Level</h3>
+              <p className="text-5xl font-black text-indigo-400 tracking-tight drop-shadow-[0_0_10px_rgba(99,102,241,0.4)] relative z-10">{stats?.xpPoints || 0}</p>
+              <p className="text-sm font-medium text-slate-500 mt-2 relative z-10">Level {stats?.level || 1}</p>
             </div>
             {user.role !== 'INSTRUCTOR' && (
               <>
-                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-emerald-100 transition-colors"></div>
-                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">Completed</h3>
-                  <p className="text-5xl font-black text-emerald-600 tracking-tight">{stats?.completedChallenges || 0}</p>
-                  <p className="text-sm font-medium text-slate-400 mt-2">{stats?.totalAttempts || 0} total attempts</p>
+                <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(16,185,129,0.2)] group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-emerald-500/30 transition-colors pointer-events-none"></div>
+                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">Completed</h3>
+                  <p className="text-5xl font-black text-emerald-400 tracking-tight drop-shadow-[0_0_10px_rgba(16,185,129,0.4)] relative z-10">{stats?.completedChallenges || 0}</p>
+                  <p className="text-sm font-medium text-slate-500 mt-2 relative z-10">{stats?.totalAttempts || 0} total attempts</p>
                 </div>
-                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-100 transition-colors"></div>
-                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">Avg Score</h3>
-                  <p className="text-5xl font-black text-blue-600 tracking-tight">{Math.round(stats?.averageScore || 0)}%</p>
+                <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(59,130,246,0.2)] group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/30 transition-colors pointer-events-none"></div>
+                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">Avg Score</h3>
+                  <p className="text-5xl font-black text-blue-400 tracking-tight drop-shadow-[0_0_10px_rgba(59,130,246,0.4)] relative z-10">{Math.round(stats?.averageScore || 0)}%</p>
                 </div>
-                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-orange-100 transition-colors"></div>
-                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">Streak</h3>
-                  <p className="text-5xl font-black text-orange-500 tracking-tight">{stats?.currentStreak || 0} 🔥</p>
-                  <p className="text-sm font-medium text-slate-400 mt-2">Best: {stats?.longestStreak || 0}</p>
+                <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(249,115,22,0.2)] group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/20 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-orange-500/30 transition-colors pointer-events-none"></div>
+                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">Streak</h3>
+                  <p className="text-5xl font-black text-orange-400 tracking-tight drop-shadow-[0_0_10px_rgba(249,115,22,0.4)] relative z-10">{stats?.currentStreak || 0} 🔥</p>
+                  <p className="text-sm font-medium text-slate-500 mt-2 relative z-10">Best: {stats?.longestStreak || 0}</p>
                 </div>
               </>
             )}
             {user.role === 'INSTRUCTOR' && analytics?.overview && (
               <>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                  <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Total Challenges</h3>
-                  <p className="text-4xl font-bold text-emerald-600">{analytics.overview.totalChallenges}</p>
+                <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                  <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2 relative z-10">Total Challenges</h3>
+                  <p className="text-4xl font-bold text-emerald-400 drop-shadow-md relative z-10">{analytics.overview.totalChallenges}</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                  <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Students Reached</h3>
-                  <p className="text-4xl font-bold text-blue-600">{analytics.overview.totalStudentsReached}</p>
+                <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                  <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2 relative z-10">Students Reached</h3>
+                  <p className="text-4xl font-bold text-blue-400 drop-shadow-md relative z-10">{analytics.overview.totalStudentsReached}</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                  <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Global Pass Rate</h3>
-                  <p className="text-4xl font-bold text-orange-500">{analytics.overview.averagePassRate}%</p>
-                  <p className="text-sm text-slate-400 mt-1">{analytics.overview.totalAttemptsReceived} attempts</p>
+                <div className="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                  <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2 relative z-10">Global Pass Rate</h3>
+                  <p className="text-4xl font-bold text-orange-400 drop-shadow-md relative z-10">{analytics.overview.averagePassRate}%</p>
+                  <p className="text-sm text-slate-500 mt-1 relative z-10">{analytics.overview.totalAttemptsReceived} attempts</p>
                 </div>
               </>
             )}
@@ -122,17 +125,17 @@ export default function Dashboard() {
             {/* Student Analytics */}
             {user.role !== 'INSTRUCTOR' && analytics?.scoreTrend && (
               <>
-                <div className="bg-white/90 p-8 rounded-3xl shadow-sm border border-slate-100">
-                  <h3 className="font-display text-xl font-extrabold text-slate-900 mb-6">Recent Score Trend</h3>
+                <div className="glass-card p-8 rounded-3xl">
+                  <h3 className="font-display text-xl font-extrabold text-white mb-6">Recent Score Trend</h3>
                   {analytics.scoreTrend.length > 0 ? (
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={analytics.scoreTrend}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                          <XAxis dataKey="title" tick={{fontSize: 12}} tickFormatter={(val) => val.length > 10 ? val.substring(0, 10) + '...' : val} />
-                          <YAxis domain={[0, 100]} tick={{fontSize: 12}} />
-                          <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                          <Line type="monotone" dataKey="score" stroke="#4f46e5" strokeWidth={3} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6}} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
+                          <XAxis dataKey="title" tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" tickFormatter={(val) => val.length > 10 ? val.substring(0, 10) + '...' : val} />
+                          <YAxis domain={[0, 100]} tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
+                          <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} />
+                          <Line type="monotone" dataKey="score" stroke="#a855f7" strokeWidth={3} dot={{r: 4, strokeWidth: 2, fill: '#0f172a'}} activeDot={{r: 6}} />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -141,15 +144,15 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                <div className="bg-white/90 p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-full">
-                  <h3 className="font-display text-xl font-extrabold text-slate-900 mb-6">Activity (Last 28 Days)</h3>
+                <div className="glass-card p-8 rounded-3xl flex flex-col h-full">
+                  <h3 className="font-display text-xl font-extrabold text-white mb-6">Activity (Last 28 Days)</h3>
                   {analytics.weeklyActivity?.length > 0 ? (
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={analytics.weeklyActivity} margin={{top: 10, right: 10, left: -20, bottom: 0}}>
-                          <XAxis dataKey="date" tick={{fontSize: 10}} tickFormatter={(val) => new Date(val).toLocaleDateString(undefined, {month: 'short', day: 'numeric'})} />
-                          <YAxis allowDecimals={false} tick={{fontSize: 12}} />
-                          <RechartsTooltip cursor={{fill: '#f8fafc'}} />
+                          <XAxis dataKey="date" tick={{fontSize: 10, fill: '#94a3b8'}} stroke="#475569" tickFormatter={(val) => new Date(val).toLocaleDateString(undefined, {month: 'short', day: 'numeric'})} />
+                          <YAxis allowDecimals={false} tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
+                          <RechartsTooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} />
                           <Bar dataKey="count" fill="#10b981" radius={[4, 4, 0, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
@@ -159,8 +162,8 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                <div className="bg-white/90 p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-full">
-                  <h3 className="font-display text-xl font-extrabold text-slate-900 mb-6">Category Mastery</h3>
+                <div className="glass-card p-8 rounded-3xl flex flex-col h-full">
+                  <h3 className="font-display text-xl font-extrabold text-white mb-6">Category Mastery</h3>
                   {analytics.categoryPerformance?.length > 0 ? (
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
@@ -170,7 +173,7 @@ export default function Dashboard() {
                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                              ))}
                            </Pie>
-                           <RechartsTooltip formatter={(value, name, props) => [`${value} attempts (Avg: ${props.payload.avgScore}%)`, name]} />
+                           <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} formatter={(value, name, props) => [`${value} attempts (Avg: ${props.payload.avgScore}%)`, name]} />
                          </PieChart>
                        </ResponsiveContainer>
                     </div>
@@ -179,15 +182,15 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                <div className="bg-white/90 p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-full">
-                  <h3 className="font-display text-xl font-extrabold text-slate-900 mb-6">Difficulty Breakdown</h3>
+                <div className="glass-card p-8 rounded-3xl flex flex-col h-full">
+                  <h3 className="font-display text-xl font-extrabold text-white mb-6">Difficulty Breakdown</h3>
                   {analytics.difficultyBreakdown?.length > 0 ? (
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={analytics.difficultyBreakdown} margin={{top: 10, right: 10, left: -20, bottom: 0}}>
-                          <XAxis dataKey="difficulty" tick={{fontSize: 12}} />
-                          <YAxis allowDecimals={false} tick={{fontSize: 12}} />
-                          <RechartsTooltip cursor={{fill: '#f8fafc'}} formatter={(value, name, props) => [`${value} challenges (Avg: ${props.payload.avgScore}%)`, 'Completed']} />
+                          <XAxis dataKey="difficulty" tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
+                          <YAxis allowDecimals={false} tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
+                          <RechartsTooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} formatter={(value, name, props) => [`${value} challenges (Avg: ${props.payload.avgScore}%)`, 'Completed']} />
                           <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
@@ -202,11 +205,11 @@ export default function Dashboard() {
             {/* Instructor Analytics */}
             {user.role === 'INSTRUCTOR' && analytics?.challengePerformance && (
                <>
-                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                   <h3 className="text-lg font-semibold text-slate-900 mb-6">Challenge Overview</h3>
+                 <div className="glass-card p-6 rounded-2xl">
+                   <h3 className="text-lg font-semibold text-white mb-6">Challenge Overview</h3>
                    <div className="overflow-auto max-h-64">
-                     <table className="w-full text-sm text-left">
-                       <thead className="text-xs text-slate-500 uppercase bg-slate-50 sticky top-0">
+                     <table className="w-full text-sm text-left text-slate-300">
+                       <thead className="text-xs text-slate-400 uppercase bg-white/5 sticky top-0">
                          <tr>
                            <th className="px-4 py-3">Challenge</th>
                            <th className="px-4 py-3">Attempts</th>
@@ -215,11 +218,11 @@ export default function Dashboard() {
                        </thead>
                        <tbody>
                          {analytics.challengePerformance.map(c => (
-                           <tr key={c.id} className="border-b border-slate-100">
-                             <td className="px-4 py-3 font-medium text-slate-900">{c.title}</td>
-                             <td className="px-4 py-3 text-slate-600">{c.attempts}</td>
+                           <tr key={c.id} className="border-b border-white/5">
+                             <td className="px-4 py-3 font-medium text-slate-100">{c.title}</td>
+                             <td className="px-4 py-3">{c.attempts}</td>
                              <td className="px-4 py-3">
-                               <span className={`px-2 py-1 rounded-full text-xs font-bold ${c.passRate >= 60 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+                               <span className={`px-2 py-1 rounded-full text-xs font-bold border ${c.passRate >= 60 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30'}`}>
                                  {c.passRate}%
                                </span>
                              </td>
@@ -233,8 +236,8 @@ export default function Dashboard() {
                    </div>
                  </div>
 
-                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                   <h3 className="text-lg font-semibold text-slate-900 mb-6">Score Distribution</h3>
+                 <div className="glass-card p-6 rounded-2xl">
+                   <h3 className="text-lg font-semibold text-white mb-6">Score Distribution</h3>
                    {analytics.scoreDistribution?.length > 0 ? (
                      <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
@@ -244,7 +247,7 @@ export default function Dashboard() {
                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                              ))}
                            </Pie>
-                           <RechartsTooltip />
+                           <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} />
                          </PieChart>
                        </ResponsiveContainer>
                      </div>
@@ -253,16 +256,16 @@ export default function Dashboard() {
                    )}
                  </div>
 
-                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 col-span-1 lg:col-span-2">
-                   <h3 className="text-lg font-semibold text-slate-900 mb-6">30-Day Engagement Timeline</h3>
+                 <div className="glass-card p-6 rounded-2xl col-span-1 lg:col-span-2">
+                   <h3 className="text-lg font-semibold text-white mb-6">30-Day Engagement Timeline</h3>
                    {analytics.engagementTimeline?.length > 0 ? (
                      <div className="h-64">
                        <ResponsiveContainer width="100%" height="100%">
                          <LineChart data={analytics.engagementTimeline}>
-                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                           <XAxis dataKey="date" tick={{fontSize: 10}} tickFormatter={(val) => new Date(val).toLocaleDateString(undefined, {month: 'short', day: 'numeric'})} />
-                           <YAxis allowDecimals={false} tick={{fontSize: 12}} />
-                           <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
+                           <XAxis dataKey="date" tick={{fontSize: 10, fill: '#94a3b8'}} stroke="#475569" tickFormatter={(val) => new Date(val).toLocaleDateString(undefined, {month: 'short', day: 'numeric'})} />
+                           <YAxis allowDecimals={false} tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
+                           <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} />
                            <Line type="monotone" dataKey="attempts" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{r: 6}} />
                          </LineChart>
                        </ResponsiveContainer>
@@ -277,26 +280,26 @@ export default function Dashboard() {
 
           {/* Fallback Recent Attempts (For Students) */}
           {user.role !== 'INSTRUCTOR' && (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <div className="px-6 py-5 border-b border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900">Recent Attempts</h3>
+            <div className="glass-card rounded-2xl overflow-hidden">
+              <div className="px-6 py-5 border-b border-white/10 bg-white/5">
+                <h3 className="text-lg font-semibold text-white">Recent Attempts</h3>
               </div>
               <div className="p-0">
                 {!loading && recentAttempts.length === 0 ? (
                   <p className="p-6 text-slate-500 text-center">No recent attempts found. Start a challenge!</p>
                 ) : (
-                  <ul className="divide-y divide-slate-200">
+                  <ul className="divide-y divide-white/5">
                     {recentAttempts.map((attempt) => (
-                      <li key={attempt._id} className="p-6 hover:bg-slate-50 transition-colors">
+                      <li key={attempt._id} className="p-6 hover:bg-white/5 transition-colors">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium text-slate-900">{attempt.challenge?.title || 'Unknown Challenge'}</p>
-                            <p className="text-sm text-slate-500 mt-1">
+                            <p className="font-bold text-slate-200">{attempt.challenge?.title || 'Unknown Challenge'}</p>
+                            <p className="text-sm text-slate-400 mt-1">
                               Completed on {new Date(attempt.completedAt).toLocaleDateString()}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className={`text-lg font-bold ${attempt.percentage >= 60 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                            <p className={`text-lg font-bold drop-shadow-md ${attempt.percentage >= 60 ? 'text-emerald-400' : 'text-rose-400'}`}>
                               {Math.round(attempt.percentage)}%
                             </p>
                             <p className="text-sm text-slate-500">{attempt.score}/{attempt.totalQuestions} correct</p>

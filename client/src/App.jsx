@@ -17,7 +17,7 @@ import NotFound from './pages/NotFound';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  if (loading) return <div className="p-10 text-center text-slate-500 animate-pulse">Loading...</div>;
+  if (loading) return <div className="p-10 text-center text-slate-400 animate-pulse">Loading...</div>;
   if (!user) return <Navigate to="/" />;
   return children;
 };
@@ -26,12 +26,12 @@ function App() {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
-     return <div className="min-h-screen flex items-center justify-center text-slate-500 font-medium">Loading Application...</div>;
+     return <div className="min-h-screen flex items-center justify-center text-slate-400 font-medium">Loading Application...</div>;
   }
 
   return (
     <Router>
-      <div className="min-h-screen flex flex-col font-sans bg-slate-50">
+      <div className="min-h-screen flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>

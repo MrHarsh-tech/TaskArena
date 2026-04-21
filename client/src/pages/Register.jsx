@@ -14,7 +14,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   const passwordStrength = useMemo(() => {
-    if (!password) return { score: 0, label: '', color: 'bg-slate-200' };
+    if (!password) return { score: 0, label: '', color: 'bg-white/10' };
     
     let score = 0;
     if (password.length >= 8) score++;
@@ -22,9 +22,9 @@ export default function Register() {
     if (/[0-9]/.test(password)) score++;
     if (/[^A-Za-z0-9]/.test(password)) score++;
 
-    if (score <= 1) return { score, label: 'Weak', color: 'bg-red-500' };
-    if (score === 2) return { score, label: 'Good', color: 'bg-yellow-500' };
-    return { score, label: 'Strong', color: 'bg-emerald-500' };
+    if (score <= 1) return { score, label: 'Weak', color: 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]' };
+    if (score === 2) return { score, label: 'Good', color: 'bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]' };
+    return { score, label: 'Strong', color: 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' };
   }, [password]);
 
   const handleSubmit = async (e) => {
@@ -65,43 +65,43 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden mesh-gradient animate-in">
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden mesh-gradient-dark animate-in rounded-3xl mt-4 border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       {/* Decorative blobs */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-      <div className="absolute top-40 right-20 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      <div className="absolute top-20 left-20 w-72 h-72 bg-indigo-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-blob"></div>
+      <div className="absolute top-40 right-20 w-72 h-72 bg-fuchsia-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-blob animation-delay-2000"></div>
+      <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-emerald-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
 
-      <div className="max-w-md w-full space-y-8 bg-white/70 backdrop-blur-xl p-10 rounded-3xl shadow-glass border border-white/50 relative z-10 transition-all duration-300 hover:shadow-xl hover:bg-white/80">
+      <div className="max-w-md w-full space-y-8 glass-card p-10 rounded-[2.5rem] relative z-10 transition-all duration-300 hover:shadow-[0_20px_60px_rgba(139,92,246,0.15)] group">
         <div>
-          <h2 className="mt-2 text-center font-display text-4xl font-extrabold text-slate-900 tracking-tight">Join the Arena</h2>
-          <p className="text-slate-500 mt-2 font-medium text-center">Create your account to start learning</p>
+          <h2 className="mt-2 text-center font-display text-4xl font-extrabold text-white tracking-tight drop-shadow-md">Join the Arena</h2>
+          <p className="text-slate-400 mt-2 font-medium text-center">Create your account to start learning</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Full Name</label>
+            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1">Full Name</label>
             <input 
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Jane Doe"
-              className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 h-12 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium" 
+              className="w-full rounded-xl border border-white/10 bg-[#0a0a0f]/80 px-4 py-3 h-12 text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 focus:bg-[#0a0a0f] transition-all font-medium drop-shadow-sm" 
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1">Email</label>
+            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1">Email</label>
             <input 
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 h-12 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium" 
+              className="w-full rounded-xl border border-white/10 bg-[#0a0a0f]/80 px-4 py-3 h-12 text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 focus:bg-[#0a0a0f] transition-all font-medium drop-shadow-sm" 
               required
             />
           </div>
           <div className="relative">
-            <label className="block text-sm font-bold text-slate-700 mb-1.5 ml-1 flex justify-between items-center">
+            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1 flex justify-between items-center">
               Password
               {password && (
                 <span className={`text-[10px] uppercase tracking-wider font-black px-2 py-0.5 rounded-full ${passwordStrength.color} text-white`}>
@@ -115,13 +115,13 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 h-12 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-white transition-all font-medium pr-12" 
+                className="w-full rounded-xl border border-white/10 bg-[#0a0a0f]/80 px-4 py-3 h-12 text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 focus:bg-[#0a0a0f] transition-all font-medium pr-12 drop-shadow-sm" 
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors focus:outline-none"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -130,19 +130,19 @@ export default function Register() {
             {/* Password Strength Indicator Bars */}
             {password && (
               <div className="flex gap-1 mt-2 px-1">
-                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-slate-200'}`}></div>
-                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-slate-200'}`}></div>
-                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-slate-200'}`}></div>
-                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 4 ? passwordStrength.color : 'bg-slate-200'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-white/10'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-white/10'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-white/10'}`}></div>
+                <div className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${passwordStrength.score >= 4 ? passwordStrength.color : 'bg-white/10'}`}></div>
               </div>
             )}
-            <p className="text-[10px] text-slate-400 mt-1.5 ml-1 font-medium">Use 8+ chars with mix of letters, numbers & symbols</p>
+            <p className="text-[10px] text-slate-500 mt-1.5 ml-1 font-medium">Use 8+ chars with mix of letters, numbers & symbols</p>
           </div>
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">I want to...</label>
+            <label className="block text-sm font-bold text-slate-300 mb-3 ml-1">I want to...</label>
             <div className="grid grid-cols-2 gap-4">
               <label 
-                className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border-2 transition-all ${role === 'STUDENT' ? 'border-indigo-600 bg-indigo-50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
+                className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border transition-all ${role === 'STUDENT' ? 'border-fuchsia-500 bg-fuchsia-500/10 shadow-[0_0_15px_rgba(217,70,239,0.2)]' : 'border-white/10 hover:border-white/30 bg-white/5'}`}
               >
                 <input 
                   type="radio" 
@@ -152,11 +152,11 @@ export default function Register() {
                   onChange={() => setRole('STUDENT')}
                   className="sr-only"
                 />
-                <span className="text-3xl mb-2">🎓</span>
-                <span className={`font-bold text-sm ${role === 'STUDENT' ? 'text-indigo-700' : 'text-slate-600'}`}>Learn</span>
+                <span className="text-3xl mb-2 drop-shadow-md">🎓</span>
+                <span className={`font-bold text-sm ${role === 'STUDENT' ? 'text-fuchsia-300' : 'text-slate-400'}`}>Learn</span>
               </label>
               <label 
-                className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border-2 transition-all ${role === 'INSTRUCTOR' ? 'border-indigo-600 bg-indigo-50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
+                className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border transition-all ${role === 'INSTRUCTOR' ? 'border-indigo-500 bg-indigo-500/10 shadow-[0_0_15px_rgba(99,102,241,0.2)]' : 'border-white/10 hover:border-white/30 bg-white/5'}`}
               >
                 <input 
                   type="radio" 
@@ -166,8 +166,8 @@ export default function Register() {
                   onChange={() => setRole('INSTRUCTOR')}
                   className="sr-only"
                 />
-                <span className="text-3xl mb-2">👨‍🏫</span>
-                <span className={`font-bold text-sm ${role === 'INSTRUCTOR' ? 'text-indigo-700' : 'text-slate-600'}`}>Teach</span>
+                <span className="text-3xl mb-2 drop-shadow-md">👨‍🏫</span>
+                <span className={`font-bold text-sm ${role === 'INSTRUCTOR' ? 'text-indigo-300' : 'text-slate-400'}`}>Teach</span>
               </label>
             </div>
           </div>
@@ -175,14 +175,14 @@ export default function Register() {
           <button 
             type="submit" 
             disabled={submitting}
-            className="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-bold mt-6 shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 hover:-translate-y-0.5 hover:shadow-xl transition-all active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-white py-4 rounded-xl font-bold mt-8 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-[1.02] transition-all active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
           >
             {submitting ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
         
-        <p className="mt-8 text-center text-sm font-medium text-slate-500">
-          Already have an account? <Link to="/login" className="text-indigo-600 hover:text-indigo-800">Log in</Link>
+        <p className="mt-8 text-center text-sm font-medium text-slate-400">
+          Already have an account? <Link to="/login" className="text-indigo-400 hover:text-indigo-300 hover:underline transition-all">Log in</Link>
         </p>
       </div>
     </div>
