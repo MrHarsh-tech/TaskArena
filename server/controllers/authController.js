@@ -68,24 +68,31 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    console.log("LOGIN HIT");
     const { email, password } = req.body;
+    console.log("LOGIN REQUEST BODY:", req.body);
 
     if (!email || !password) {
+      console.log("LOGIN ERROR: Missing email or password");
       return res.status(400).json({ message: 'Please provide email and password' });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      console.log("LOGIN ERROR: Invalid email format");
       return res.status(400).json({ message: 'Please provide a valid email' });
     }
 
     const user = await User.findOne({ email });
+    console.log("USER FOUND IN DB:", user ? user.email : "Not Found");
 
     if (user && (await bcrypt.compare(password, user.passwordHash))) {
       user.lastLoginAt = new Date();
       await user.save();
 
       const token = generateToken(user._id);
+      console.log("USER:", user);
+      console.log("TOKEN:", token);
 
       return res.status(200).json({
         _id: user._id,
@@ -101,9 +108,11 @@ const loginUser = async (req, res) => {
         }
       });
     } else {
+      console.log("LOGIN ERROR: Invalid email or password match");
       return res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
+    console.error("LOGIN CATCH ERROR:", error);
     return res.status(500).json({ message: error.message });
   }
 };
