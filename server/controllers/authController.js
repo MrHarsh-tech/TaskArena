@@ -85,18 +85,26 @@ const loginUser = async (req, res) => {
       user.lastLoginAt = new Date();
       await user.save();
 
-      res.json({
-        _id: user.id,
+      const token = generateToken(user._id);
+
+      return res.status(200).json({
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id)
+        token: token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
       });
     } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
