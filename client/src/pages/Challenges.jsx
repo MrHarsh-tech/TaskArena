@@ -66,6 +66,8 @@ export default function Challenges() {
   const [searchTerm, setSearchTerm] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null); // challenge to confirm-delete
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -141,8 +143,78 @@ export default function Challenges() {
     }
   };
 
+  const handleDeleteClick = (e, challenge) => {
+    e.preventDefault();
+    setDeleteTarget(challenge);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      await axios.delete(`${API_URL}/challenges/${deleteTarget._id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setChallenges(prev => prev.filter(c => c._id !== deleteTarget._id));
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error('Failed to delete challenge', error);
+      alert(error.response?.data?.message || 'Failed to delete challenge.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const canDelete = (challenge) => {
+    if (!user) return false;
+    if (user.role === 'ADMIN') return true;
+    return challenge.creator?._id === user._id || challenge.creator === user._id;
+  };
+
   return (
     <>
+      {/* ── Delete Confirmation Modal ── */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backdropFilter: 'blur(8px)', backgroundColor: 'rgba(0,0,0,0.75)' }}>
+          <div className="glass-panel w-full max-w-md p-8 rounded-2xl border border-rose-500/30 shadow-[0_0_60px_rgba(244,63,94,0.25)] animate-in">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">Delete Challenge?</h2>
+                <p className="text-zinc-400 text-sm mt-0.5">This action cannot be undone.</p>
+              </div>
+            </div>
+            <p className="text-zinc-300 mb-8">
+              Are you sure you want to delete <span className="font-bold text-white">&ldquo;{deleteTarget.title}&rdquo;</span>? It will be removed from the public list immediately.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 rounded-xl border border-white/10 bg-white/5 text-white font-semibold hover:bg-white/10 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleting}
+                className="flex-1 px-5 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-all shadow-[0_0_20px_rgba(244,63,94,0.4)] disabled:opacity-60 flex items-center justify-center gap-2"
+              >
+                {deleting ? (
+                  <><svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" /><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-75" /></svg> Deleting…</>
+                ) : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="cosmic-dashboard-bg">
         <div className="cosmic-stars"></div>
         <div className="cosmic-nebula"></div>
@@ -219,15 +291,28 @@ export default function Challenges() {
                     </span>
                   )}
                   {user && (
-                    <button 
-                       onClick={(e) => toggleBookmark(e, challenge._id)}
-                       className={`ml-auto p-2 rounded-full border border-[rgba(255,255,255,0.08)] focus:outline-none transition-all ${bookmarkedIds.includes(challenge._id) ? 'text-rose-500 bg-rose-500/10 border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.3)]' : 'text-zinc-400 bg-white/5 hover:bg-white/10 hover:text-rose-400 hover:shadow-[0_0_10px_rgba(255,255,255,0.1)]'}`}
-                       title="Bookmark Challenge"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                      </svg>
-                    </button>
+                    <div className="ml-auto flex items-center gap-2">
+                      <button 
+                         onClick={(e) => toggleBookmark(e, challenge._id)}
+                         className={`p-2 rounded-full border border-[rgba(255,255,255,0.08)] focus:outline-none transition-all ${bookmarkedIds.includes(challenge._id) ? 'text-rose-500 bg-rose-500/10 border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.3)]' : 'text-zinc-400 bg-white/5 hover:bg-white/10 hover:text-rose-400 hover:shadow-[0_0_10px_rgba(255,255,255,0.1)]'}`}
+                         title="Bookmark Challenge"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                      {canDelete(challenge) && (
+                        <button
+                          onClick={(e) => handleDeleteClick(e, challenge)}
+                          className="p-2 rounded-full border border-[rgba(255,255,255,0.08)] text-zinc-400 bg-white/5 hover:bg-rose-500/20 hover:text-rose-400 hover:border-rose-500/40 hover:shadow-[0_0_12px_rgba(244,63,94,0.35)] focus:outline-none transition-all"
+                          title="Delete Challenge"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
                 
