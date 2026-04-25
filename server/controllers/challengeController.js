@@ -164,7 +164,17 @@ const submitAttempt = async (req, res) => {
     progress.totalAttempts = totalAttempts;
     progress.averageScore = avgScore;
     progress.challengesCompleted = challengesCompleted;
-    progress.currentStreak += 1;
+
+    // Only build streak on passing attempts (>= 50%)
+    if (percentage >= 50) {
+      progress.currentStreak += 1;
+      if (progress.currentStreak > (progress.longestStreak || 0)) {
+        progress.longestStreak = progress.currentStreak;
+      }
+    } else {
+      progress.currentStreak = 0; // Reset streak on failed attempt
+    }
+
     progress.lastActiveAt = new Date();
     await progress.save();
 
