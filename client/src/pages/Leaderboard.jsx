@@ -91,7 +91,7 @@ export default function Leaderboard() {
                             {user.name} {isCurrentUser && '(You)'}
                           </p>
                           {user.currentStreak > 2 && (
-                            <p className="text-xs text-orange-400 font-medium drop-shadow-[0_0_5px_rgba(249,115,22,0.4)]">🔥 {user.currentStreak} day streak</p>
+                            <p className="text-xs text-orange-400 font-medium drop-shadow-[0_0_5px_rgba(249,115,22,0.4)]">🔥 {user.currentStreak} streak</p>
                           )}
                         </div>
                       </div>
