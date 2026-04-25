@@ -14,11 +14,13 @@ export default function Navbar() {
   };
 
   const isActive = (path) => {
-    return location.pathname === path ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]" : "text-slate-400 hover:text-slate-200 hover:bg-white/5";
+    return location.pathname === path 
+      ? "bg-gradient-primary text-white shadow-[0_0_15px_rgba(99,102,241,0.8)] opacity-100" 
+      : "bg-gradient-primary text-white shadow-[0_0_10px_rgba(99,102,241,0.3)] opacity-60 hover:opacity-100";
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-2xl bg-[#0a0a0f]/80 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all duration-300">
+    <nav className="sticky top-0 z-50 glass-panel !rounded-none !border-t-0 !border-l-0 !border-r-0 border-b border-[rgba(255,255,255,0.08)] !shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-indigo-500/50 after:to-transparent">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center space-x-3 group">
@@ -62,17 +64,17 @@ export default function Navbar() {
                   </button>
 
                   {menuOpen && (
-                    <div className="absolute right-0 mt-3 w-64 bg-[#11111a]/95 backdrop-blur-xl rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] border border-white/10 py-2 animate-in z-50">
+                    <div className="absolute right-0 mt-3 w-64 glass-panel solid-graph-bg py-2 animate-in z-50">
                       <div className="px-5 py-4 border-b border-white/10 mb-2">
-                        <p className="text-sm font-bold text-slate-100 truncate">{user.name}</p>
-                        <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                        <p className="text-sm font-bold text-white truncate">{user.name}</p>
+                        <p className="text-xs text-zinc-400 truncate">{user.email}</p>
                         <div className="mt-3 inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                           {user.role}
                         </div>
                       </div>
-                      <Link to="/" className="block px-5 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-indigo-400 font-medium transition-colors" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+                      <Link to="/" className="block px-5 py-2.5 text-sm text-zinc-300 hover:bg-white/5 hover:text-indigo-400 font-medium transition-colors" onClick={() => setMenuOpen(false)}>Dashboard</Link>
                       {user.role === 'INSTRUCTOR' && (
-                        <Link to="/challenges/create" className="block px-5 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-indigo-400 font-medium transition-colors" onClick={() => setMenuOpen(false)}>Create Challenge</Link>
+                        <Link to="/challenges/create" className="block px-5 py-2.5 text-sm text-zinc-300 hover:bg-white/5 hover:text-indigo-400 font-medium transition-colors" onClick={() => setMenuOpen(false)}>Create Challenge</Link>
                       )}
                       <button 
                         onClick={() => { handleLogout(); setMenuOpen(false); }}
@@ -86,7 +88,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="flex space-x-4">
-                <Link to="/login" className="px-5 py-2.5 text-slate-300 font-bold hover:text-white hover:bg-white/5 rounded-xl transition-colors">Login</Link>
+                <Link to="/login" className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all hover:-translate-y-0.5 border border-white/10">Login</Link>
                 <Link to="/register" className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all hover:-translate-y-0.5 border border-white/10">Sign Up</Link>
               </div>
             )}

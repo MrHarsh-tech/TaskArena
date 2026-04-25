@@ -39,14 +39,21 @@ export default function QuickPlay() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative glass-card animate-in mt-10 border border-white/10">
+    <>
+      <div className="cosmic-dashboard-bg">
+        <div className="cosmic-stars"></div>
+        <div className="cosmic-nebula"></div>
+        <div className="cosmic-planet-1"></div>
+        <div className="cosmic-planet-2"></div>
+      </div>
+      <div className="max-w-2xl mx-auto rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative glass-panel animate-in mt-10 border border-white/10 z-10">
        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
        <div className="absolute -top-24 -right-24 w-64 h-64 bg-fuchsia-500 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-500 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
 
        <div className="relative z-10 p-16 text-center">
          <h1 className="font-display text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 tracking-tight mb-6 neon-text-glow">Quick Play</h1>
-         <p className="text-xl text-slate-300 max-w-sm mx-auto mb-12 font-light">
+         <p className="text-xl text-zinc-300 max-w-sm mx-auto mb-12 font-light">
             Let fate decide! We'll match you with a challenge tailored to test your mastery.
          </p>
 
@@ -75,5 +82,6 @@ export default function QuickPlay() {
          )}
        </div>
     </div>
+    </>
   );
 }

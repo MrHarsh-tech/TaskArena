@@ -79,7 +79,7 @@ export default function Register() {
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1">Full Name</label>
+            <label className="block text-sm font-bold text-slate-200 mb-1.5 ml-1">Full Name</label>
             <input 
               type="text" 
               value={name}
@@ -90,7 +90,7 @@ export default function Register() {
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1">Email</label>
+            <label className="block text-sm font-bold text-slate-200 mb-1.5 ml-1">Email</label>
             <input 
               type="email" 
               value={email}
@@ -101,7 +101,7 @@ export default function Register() {
             />
           </div>
           <div className="relative">
-            <label className="block text-sm font-bold text-slate-300 mb-1.5 ml-1 flex justify-between items-center">
+            <label className="block text-sm font-bold text-slate-200 mb-1.5 ml-1 flex justify-between items-center">
               Password
               {password && (
                 <span className={`text-[10px] uppercase tracking-wider font-black px-2 py-0.5 rounded-full ${passwordStrength.color} text-white`}>
@@ -139,7 +139,7 @@ export default function Register() {
             <p className="text-[10px] text-slate-500 mt-1.5 ml-1 font-medium">Use 8+ chars with mix of letters, numbers & symbols</p>
           </div>
           <div>
-            <label className="block text-sm font-bold text-slate-300 mb-3 ml-1">I want to...</label>
+            <label className="block text-sm font-bold text-slate-200 mb-3 ml-1">I want to...</label>
             <div className="grid grid-cols-2 gap-4">
               <label 
                 className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border transition-all ${role === 'STUDENT' ? 'border-fuchsia-500 bg-fuchsia-500/10 shadow-[0_0_15px_rgba(217,70,239,0.2)]' : 'border-white/10 hover:border-white/30 bg-white/5'}`}
@@ -153,7 +153,7 @@ export default function Register() {
                   className="sr-only"
                 />
                 <span className="text-3xl mb-2 drop-shadow-md">🎓</span>
-                <span className={`font-bold text-sm ${role === 'STUDENT' ? 'text-fuchsia-300' : 'text-slate-400'}`}>Learn</span>
+                <span className={`font-bold text-sm ${role === 'STUDENT' ? 'text-fuchsia-300' : 'text-slate-400'}`}>Student</span>
               </label>
               <label 
                 className={`relative flex flex-col items-center p-4 cursor-pointer rounded-2xl border transition-all ${role === 'INSTRUCTOR' ? 'border-indigo-500 bg-indigo-500/10 shadow-[0_0_15px_rgba(99,102,241,0.2)]' : 'border-white/10 hover:border-white/30 bg-white/5'}`}
@@ -167,7 +167,7 @@ export default function Register() {
                   className="sr-only"
                 />
                 <span className="text-3xl mb-2 drop-shadow-md">👨‍🏫</span>
-                <span className={`font-bold text-sm ${role === 'INSTRUCTOR' ? 'text-indigo-300' : 'text-slate-400'}`}>Teach</span>
+                <span className={`font-bold text-sm ${role === 'INSTRUCTOR' ? 'text-indigo-300' : 'text-slate-400'}`}>Instructor</span>
               </label>
             </div>
           </div>

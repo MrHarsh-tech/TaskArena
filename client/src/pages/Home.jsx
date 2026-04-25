@@ -65,7 +65,7 @@ export default function Home() {
             Through Challenges
           </h1>
 
-          <p className="text-xl text-slate-300 mb-10 max-w-2xl font-light leading-relaxed">
+          <p className="text-xl text-zinc-300 mb-10 max-w-2xl font-light leading-relaxed">
             TaskArena is where instructors craft engaging MCQ challenges and students 
             sharpen their knowledge — with instant feedback, leaderboards, and progress tracking.
           </p>

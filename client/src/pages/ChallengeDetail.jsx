@@ -93,14 +93,14 @@ export default function ChallengeDetail() {
     }
   };
 
-  if (loading) return <div className="text-center py-20 text-xl font-medium animate-pulse text-slate-500">Loading Challenge Database...</div>;
-  if (!challenge) return <div className="text-center py-20 text-xl font-medium text-rose-500">Challenge Not Found</div>;
+  if (loading) return <div className="text-center py-20 text-xl font-medium animate-pulse text-zinc-400">Loading Challenge Database...</div>;
+  if (!challenge) return <div className="text-center py-20 text-xl font-medium text-rose-400">Challenge Not Found</div>;
 
   if (result) {
     const isPass = result.attempt.percentage >= 60;
     return (
       <div className="max-w-3xl mx-auto animate-in mt-10">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+        <div className="glass-panel overflow-hidden">
           <div className={`p-12 text-center text-white relative overflow-hidden ${isPass ? 'bg-gradient-to-br from-emerald-500 to-teal-700' : 'bg-gradient-to-br from-rose-500 to-red-700'}`}>
             {/* Background design elements */}
             <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-white opacity-10"></div>
@@ -113,15 +113,15 @@ export default function ChallengeDetail() {
             </div>
           </div>
           
-          <div className="p-12 flex flex-col items-center space-y-8 bg-slate-50">
+          <div className="p-12 flex flex-col items-center space-y-8 bg-transparent">
             <div className="grid grid-cols-2 gap-6 w-full max-w-md">
-              <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-slate-100 transform transition-transform hover:scale-105">
-                <div className="text-5xl font-black text-slate-900 mb-1">{Math.round(result.attempt.percentage)}<span className="text-2xl text-slate-400">%</span></div>
-                <div className="text-xs font-bold tracking-widest text-slate-400 uppercase">Accuracy</div>
+              <div className="text-center p-6 bg-white/5 rounded-2xl border border-[rgba(255,255,255,0.08)] transform transition-transform hover:-translate-y-[5px]">
+                <div className="text-5xl font-black text-white mb-1">{Math.round(result.attempt.percentage)}<span className="text-2xl text-zinc-500">%</span></div>
+                <div className="text-xs font-bold tracking-widest text-zinc-500 uppercase">Accuracy</div>
               </div>
-              <div className="text-center p-6 bg-white rounded-2xl shadow-sm border border-slate-100 transform transition-transform hover:scale-105">
-                <div className="text-5xl font-black text-indigo-600 mb-1">+{result.xpEarned}</div>
-                <div className="text-xs font-bold tracking-widest text-slate-400 uppercase">XP Earned</div>
+              <div className="text-center p-6 bg-white/5 rounded-2xl border border-[rgba(255,255,255,0.08)] transform transition-transform hover:-translate-y-[5px]">
+                <div className="text-5xl font-black text-indigo-400 mb-1">+{result.xpEarned}</div>
+                <div className="text-xs font-bold tracking-widest text-zinc-500 uppercase">XP Earned</div>
               </div>
             </div>
 
@@ -140,19 +140,19 @@ export default function ChallengeDetail() {
             )}
 
             {/* Level up notification if applicable */}
-            <div className="w-full max-w-md bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex items-center justify-between">
+            <div className="w-full max-w-md bg-indigo-900/20 border border-indigo-500/30 rounded-xl p-4 flex items-center justify-between">
                <div>
-                 <p className="text-sm font-bold text-indigo-900">Current Level</p>
-                 <p className="text-xs text-indigo-700 mt-0.5">Keep practicing to level up!</p>
+                 <p className="text-sm font-bold text-indigo-100">Current Level</p>
+                 <p className="text-xs text-indigo-300 mt-0.5">Keep practicing to level up!</p>
                </div>
-               <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-indigo-100 font-bold text-indigo-600">
+               <div className="bg-gradient-primary px-4 py-2 rounded-lg shadow-[0_4px_20px_rgba(99,102,241,0.4)] font-bold text-white">
                  Level {result.newLevel}
                </div>
             </div>
             
             <button 
               onClick={() => navigate('/')}
-              className="w-full max-w-md px-10 py-4 bg-slate-900 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:bg-indigo-600 transition-all focus:outline-none focus:ring-4 focus:ring-indigo-500/30"
+              className="w-full max-w-md px-10 py-4 bg-gradient-primary text-white rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all hover:-translate-y-[5px]"
             >
               Return to Dashboard
             </button>
@@ -163,34 +163,38 @@ export default function ChallengeDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-in">
-      <div className="p-10 border-b border-slate-100 bg-slate-50 relative overflow-hidden">
+    <>
+      <div className="cosmic-dashboard-bg">
+        <div className="cosmic-stars"></div>
+      </div>
+      <div className="max-w-4xl mx-auto glass-panel overflow-hidden animate-in relative z-10">
+      <div className="p-10 border-b border-[rgba(255,255,255,0.08)] bg-white/5 relative overflow-hidden">
         {/* Subtle background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-50 -mr-20 -mt-20"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-900/20 rounded-full blur-3xl opacity-50 -mr-20 -mt-20"></div>
 
         <div className="relative z-10">
           <div className="flex flex-wrap items-center gap-4 mb-6">
-            <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full ${challenge.difficulty === 'EASY' ? 'bg-emerald-100 text-emerald-800' : challenge.difficulty === 'MEDIUM' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}`}>
+            <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full ${challenge.difficulty === 'EASY' ? 'bg-emerald-500/10 text-emerald-400' : challenge.difficulty === 'MEDIUM' ? 'bg-amber-500/10 text-amber-400' : 'bg-rose-500/10 text-rose-400'}`}>
               {challenge.difficulty}
             </span>
             
             {challenge.creator && (
-               <div className="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
-                 <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 overflow-hidden">
+               <div className="flex items-center space-x-2 bg-white/5 px-3 py-1.5 rounded-full border border-[rgba(255,255,255,0.08)]">
+                 <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-white border border-white/20 overflow-hidden">
                    {challenge.creator.avatarUrl ? (
                      <img src={challenge.creator.avatarUrl} alt={challenge.creator.name} className="w-full h-full object-cover" />
                    ) : (
                      challenge.creator.name?.charAt(0) || 'I'
                    )}
                  </div>
-                 <span className="text-sm font-medium text-slate-700">{challenge.creator.name}</span>
+                 <span className="text-sm font-medium text-zinc-300">{challenge.creator.name}</span>
                </div>
             )}
             
             {user && (
               <button 
                 onClick={toggleBookmark}
-                className={`ml-auto p-2.5 rounded-full border-2 transition-all shadow-sm ${isBookmarked ? 'bg-rose-50 text-rose-500 border-rose-200 hover:bg-rose-100 hover:border-rose-300' : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300 hover:text-rose-400'}`}
+                className={`ml-auto p-2.5 rounded-full border border-[rgba(255,255,255,0.08)] transition-all shadow-sm ${isBookmarked ? 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-500/20' : 'bg-white/5 text-zinc-400 hover:border-rose-500/50 hover:text-rose-400'}`}
                 title={isBookmarked ? "Remove Bookmark" : "Save Challenge"}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -200,16 +204,16 @@ export default function ChallengeDetail() {
             )}
           </div>
           
-          <h1 className="font-display text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight drop-shadow-sm">{challenge.title}</h1>
-          <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">{challenge.description}</p>
+          <h1 className="font-display text-5xl font-black text-white mb-6 tracking-tight leading-tight drop-shadow-sm">{challenge.title}</h1>
+          <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">{challenge.description}</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="p-10 space-y-12">
         {challenge.questions.map((q, index) => (
           <div key={q._id} className="space-y-6">
-            <h3 className="text-xl font-bold text-slate-900 flex">
-              <span className="bg-slate-900 text-white w-8 h-8 rounded-full inline-flex items-center justify-center mr-4 flex-shrink-0 text-sm">
+            <h3 className="text-xl font-bold text-white flex items-center">
+              <span className="bg-gradient-primary text-white w-8 h-8 rounded-full inline-flex items-center justify-center mr-4 flex-shrink-0 text-sm shadow-[0_0_15px_rgba(168,85,247,0.4)]">
                 {index + 1}
               </span>
               <span className="leading-relaxed">{q.text}</span>
@@ -221,7 +225,7 @@ export default function ChallengeDetail() {
                   {q.options.map(option => (
                     <label 
                       key={option._id} 
-                      className={`flex items-center p-5 rounded-xl border-2 cursor-pointer transition-all ${answers[q._id]?.selectedOptionId === option._id ? 'border-indigo-600 bg-indigo-50 shadow-sm' : 'border-slate-200 hover:border-slate-300'}`}
+                      className={`flex items-center p-5 rounded-xl border cursor-pointer transition-all ${answers[q._id]?.selectedOptionId === option._id ? 'border-indigo-500 bg-indigo-500/10 shadow-[0_4px_20px_rgba(99,102,241,0.15)]' : 'bg-white/5 border-[rgba(255,255,255,0.08)] hover:border-indigo-500/50'}`}
                     >
                       <input 
                         type="radio" 
@@ -229,10 +233,10 @@ export default function ChallengeDetail() {
                         value={option._id}
                         checked={answers[q._id]?.selectedOptionId === option._id || false}
                         required
-                        className="w-5 h-5 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                        className="w-5 h-5 text-indigo-600 focus:ring-indigo-500 border-zinc-500 bg-transparent focus:ring-offset-0 focus:ring-offset-transparent"
                         onChange={(e) => handleInputChange(q._id, e.target.value, 'MCQ')}
                       />
-                      <span className="ml-4 text-slate-700 font-medium">{option.text}</span>
+                      <span className="ml-4 text-white font-medium">{option.text}</span>
                     </label>
                   ))}
                 </div>
@@ -241,7 +245,7 @@ export default function ChallengeDetail() {
                   type="text" 
                   required
                   placeholder="Type your exact answer here..."
-                  className="w-full p-5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-indigo-600 focus:ring-0 text-slate-900 font-medium transition-colors"
+                  className="w-full p-5 bg-white/5 border border-[rgba(255,255,255,0.08)] rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 text-white font-medium transition-all placeholder-zinc-500"
                   onChange={(e) => handleInputChange(q._id, e.target.value, 'FILL_IN_BLANK')}
                 />
               )}
@@ -249,16 +253,17 @@ export default function ChallengeDetail() {
           </div>
         ))}
 
-        <div className="pt-8 border-t border-slate-100 flex justify-end">
+        <div className="pt-8 border-t border-[rgba(255,255,255,0.08)] flex justify-end">
           <button 
             type="submit" 
             disabled={submitting}
-            className="px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-bold text-lg hover:from-indigo-700 hover:to-purple-700 hover:shadow-glass-button hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none w-full md:w-auto"
+            className="px-10 py-5 bg-gradient-primary text-white rounded-2xl font-bold text-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none w-full md:w-auto"
           >
             {submitting ? 'Evaluating Submission...' : 'Submit Answers & Calculate Score'}
           </button>
         </div>
       </form>
     </div>
+    </>
   );
 }
