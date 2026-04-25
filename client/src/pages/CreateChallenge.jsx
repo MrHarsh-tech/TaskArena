@@ -1,18 +1,103 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+// Fallback categories in case API is unreachable
+const FALLBACK_CATEGORIES = [
+  { _id: 'javascript', name: 'JavaScript' },
+  { _id: 'react', name: 'React' },
+  { _id: 'nodejs', name: 'Node.js' },
+  { _id: 'python', name: 'Python' },
+  { _id: 'data-science', name: 'Data Science' },
+  { _id: 'devops', name: 'DevOps' },
+];
+
+const DIFFICULTIES = [
+  { value: 'EASY', label: 'Easy', color: '#22C55E' },
+  { value: 'MEDIUM', label: 'Medium', color: '#F97316' },
+  { value: 'HARD', label: 'Hard', color: '#EF4444' },
+];
+
+// Custom Dropdown Component
+function CustomSelect({ options, value, onChange, placeholder, getLabel, getValue, colorKey }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const selected = options.find(o => getValue(o) === value);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="w-full p-4 bg-[#0B0F1A] border border-[rgba(255,255,255,0.12)] rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-white text-left flex items-center justify-between transition-all hover:border-indigo-500/50"
+      >
+        <span style={selected && colorKey ? { color: selected[colorKey] } : {}} className={!selected ? 'text-zinc-500' : ''}>
+          {selected ? getLabel(selected) : placeholder}
+        </span>
+        <svg className={`w-4 h-4 text-zinc-400 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute z-50 w-full mt-1 bg-[#0B0F1A] border border-[rgba(255,255,255,0.12)] rounded-xl shadow-2xl shadow-black/60 overflow-hidden">
+          {options.map(opt => (
+            <button
+              key={getValue(opt)}
+              type="button"
+              onClick={() => { onChange(getValue(opt)); setOpen(false); }}
+              className={`w-full px-4 py-3 text-left font-medium hover:bg-indigo-600/20 transition-colors flex items-center gap-2 ${
+                getValue(opt) === value ? 'bg-indigo-600/30 text-white' : 'text-zinc-200'
+              }`}
+            >
+              {colorKey && <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: opt[colorKey] }}></span>}
+              {getLabel(opt)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function CreateChallenge() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     difficulty: 'EASY',
+    categoryId: '',
   });
   const [questions, setQuestions] = useState([
     { text: '', questionType: 'MCQ', options: [{ text: '', isCorrect: true }, { text: '', isCorrect: false }] }
   ]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const res = await axios.get(`${API_URL}/categories`);
+        if (res.data && res.data.length > 0) {
+          setCategories(res.data);
+        } else {
+          // Use fallback if API returns empty
+          setCategories(FALLBACK_CATEGORIES);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories, using fallback:', error);
+        setCategories(FALLBACK_CATEGORIES);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleAddQuestion = () => {
     setQuestions([...questions, { text: '', questionType: 'MCQ', options: [{ text: '', isCorrect: true }, { text: '', isCorrect: false }] }]);
@@ -108,16 +193,28 @@ export default function CreateChallenge() {
           </div>
 
           <div>
+            <label className="block text-sm font-semibold text-zinc-300 mb-2">Category</label>
+            <CustomSelect
+              options={categories}
+              value={formData.categoryId}
+              onChange={(val) => setFormData({...formData, categoryId: val})}
+              placeholder="Select a category..."
+              getLabel={(o) => o.name}
+              getValue={(o) => o._id}
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-semibold text-zinc-300 mb-2">Difficulty</label>
-            <select 
-              className="w-full p-4 bg-white/5 border border-[rgba(255,255,255,0.08)] rounded-xl focus:ring-2 focus:ring-indigo-500 font-medium text-white appearance-none"
+            <CustomSelect
+              options={DIFFICULTIES}
               value={formData.difficulty}
-              onChange={(e) => setFormData({...formData, difficulty: e.target.value})}
-            >
-              <option value="EASY">Easy</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HARD">Hard</option>
-            </select>
+              onChange={(val) => setFormData({...formData, difficulty: val})}
+              placeholder="Select difficulty..."
+              getLabel={(o) => o.label}
+              getValue={(o) => o.value}
+              colorKey="color"
+            />
           </div>
         </div>
 

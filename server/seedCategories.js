@@ -13,7 +13,7 @@ const categories = [
 
 const seedDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskarena');
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/taskarena');
     console.log('MongoDB connected for seeding');
 
     await Category.deleteMany({});

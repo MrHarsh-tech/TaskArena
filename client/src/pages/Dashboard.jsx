@@ -220,7 +220,12 @@ export default function Dashboard() {
                           <XAxis dataKey="difficulty" tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
                           <YAxis allowDecimals={false} tick={{fontSize: 12, fill: '#94a3b8'}} stroke="#475569" />
                           <RechartsTooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc', borderRadius: '8px' }} formatter={(value, name, props) => [`${value} challenges (Avg: ${props.payload.avgScore}%)`, 'Completed']} />
-                          <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                            {analytics.difficultyBreakdown.map((entry, index) => {
+                              const color = entry.difficulty === 'EASY' ? '#10b981' : entry.difficulty === 'MEDIUM' ? '#f97316' : entry.difficulty === 'HARD' ? '#ef4444' : '#8b5cf6';
+                              return <Cell key={`cell-${index}`} fill={color} />;
+                            })}
+                          </Bar>
                         </BarChart>
                       </ResponsiveContainer>
                     </div>

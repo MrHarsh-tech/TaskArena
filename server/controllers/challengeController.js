@@ -58,7 +58,7 @@ const getChallengeById = async (req, res) => {
 
 const createChallenge = async (req, res) => {
   try {
-    const { title, description, difficulty, tags, isPublished, questions } = req.body;
+    const { title, description, difficulty, tags, isPublished, questions, categoryId } = req.body;
     
     // Validate
     if (!title || !description || !questions || questions.length === 0) {
@@ -71,7 +71,8 @@ const createChallenge = async (req, res) => {
       difficulty: difficulty || 'EASY',
       tags: tags || [],
       isPublished: true, // Auto publish for now
-      creator: req.user.id
+      creator: req.user.id,
+      category: categoryId || null
     });
     
     // Format and inject question ids

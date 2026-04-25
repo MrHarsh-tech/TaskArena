@@ -1,7 +1,61 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+
+const DIFFICULTY_OPTIONS = [
+  { value: '', label: 'All Difficulties' },
+  { value: 'EASY', label: 'Easy', color: '#22C55E' },
+  { value: 'MEDIUM', label: 'Medium', color: '#F97316' },
+  { value: 'HARD', label: 'Hard', color: '#EF4444' },
+];
+
+function CustomSelect({ options, value, onChange, getLabel, getValue, colorKey }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const selected = options.find(o => getValue(o) === value);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="w-full px-4 py-3 bg-[#0B0F1A] border border-[rgba(255,255,255,0.12)] rounded-xl font-medium text-white text-left flex items-center justify-between transition-all hover:border-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        <span style={selected?.color ? { color: selected.color } : {}}>
+          {selected ? getLabel(selected) : options[0] ? getLabel(options[0]) : ''}
+        </span>
+        <svg className={`w-4 h-4 text-zinc-400 transition-transform flex-shrink-0 ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute z-50 w-full mt-1 bg-[#0B0F1A] border border-[rgba(255,255,255,0.12)] rounded-xl shadow-2xl shadow-black/60 overflow-hidden">
+          {options.map(opt => (
+            <button
+              key={getValue(opt)}
+              type="button"
+              onClick={() => { onChange(getValue(opt)); setOpen(false); }}
+              className={`w-full px-4 py-3 text-left font-medium hover:bg-indigo-600/20 transition-colors flex items-center gap-2 ${
+                getValue(opt) === value ? 'bg-indigo-600/30 text-white' : 'text-zinc-200'
+              }`}
+            >
+              {colorKey && opt[colorKey] && <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: opt[colorKey] }}></span>}
+              {getLabel(opt)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Challenges() {
   const { user } = useContext(AuthContext);
@@ -122,28 +176,23 @@ export default function Challenges() {
           />
         </div>
         <div className="w-full sm:w-48">
-          <select 
+          <CustomSelect
+            options={[{ _id: '', name: 'All Categories' }, ...categories]}
             value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-[rgba(255,255,255,0.08)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white/5 text-white transition-all font-medium appearance-none cursor-pointer"
-          >
-            <option value="" className="bg-[#1c1e2a] text-white">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat._id} value={cat._id} className="bg-[#1c1e2a] text-white">{cat.name}</option>
-            ))}
-          </select>
+            onChange={setCategoryFilter}
+            getLabel={(o) => o.name}
+            getValue={(o) => o._id}
+          />
         </div>
         <div className="w-full sm:w-48">
-          <select 
+          <CustomSelect
+            options={DIFFICULTY_OPTIONS}
             value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-[rgba(255,255,255,0.08)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white/5 text-white transition-all font-medium appearance-none cursor-pointer"
-          >
-            <option value="" className="bg-[#1c1e2a] text-white">All Difficulties</option>
-            <option value="EASY" className="bg-[#1c1e2a] text-white">Easy</option>
-            <option value="MEDIUM" className="bg-[#1c1e2a] text-white">Medium</option>
-            <option value="HARD" className="bg-[#1c1e2a] text-white">Hard</option>
-          </select>
+            onChange={setDifficultyFilter}
+            getLabel={(o) => o.label}
+            getValue={(o) => o.value}
+            colorKey="color"
+          />
         </div>
       </div>
 
